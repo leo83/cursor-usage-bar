@@ -199,7 +199,7 @@ enum BarsRenderer {
         default:
             if bar.percent >= 95 { return .systemRed }
             if bar.percent >= 80 { return .systemOrange }
-            return cursorBlack
+            return .systemGreen
         }
     }
 }
