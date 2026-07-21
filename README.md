@@ -107,11 +107,8 @@ make login
 Отключить: `make unlogin`. Также автозапуск можно переключать пунктом меню
 `Запускать при входе` в самом приложении.
 
-Проверить, что зарегистрирован именно `.app`:
-
-```bash
-sfltool dumpbtm | grep -iC5 cursor   # URL должен быть /Applications/CursorUsageTray.app/
-```
+Проверить статус можно в System Settings → General → Login Items — там должно
+быть `Cursor Usage`, указывающее на `/Applications/CursorUsageTray.app`.
 
 ## Сборка bundle
 

@@ -35,7 +35,7 @@ launch:
 login: install
 	"$(APP_BIN)" --register-login
 	open -a CursorUsageTray
-	@echo "Автозапуск включён. Проверить: sfltool dumpbtm | grep -iC5 cursor"
+	@echo "Автозапуск включён (login item -> /Applications/CursorUsageTray.app)."
 
 # Отключает автозапуск при входе.
 unlogin:
