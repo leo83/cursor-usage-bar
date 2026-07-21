@@ -105,7 +105,15 @@ swift build
 make run
 make app
 make install
+make login      # автозапуск через переносимый LaunchAgent
+make unlogin    # снять автозапуск
+make uninstall  # снять автозапуск + удалить .app
 ```
+
+Автозапуск: встроенный `SMAppService`-тумблер в меню приложения, либо
+переносимый per-user LaunchAgent (`scripts/loginitem.sh`, цели `login`/`unlogin`).
+Скрипт берёт label и исполняемый файл из `Info.plist` бандла — в репозиторий
+не попадает ничего машинно-специфичного.
 
 Перед завершением значимых изменений запускайте минимум:
 
