@@ -241,6 +241,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if isLoginItemEnabled() {
                 try SMAppService.mainApp.unregister()
             } else {
+                // Registering a bare `.build` binary (e.g. `make run`) points the
+                // login item at the executable instead of the .app bundle, so at
+                // login it launches terminal-style. Only register a real bundle.
+                guard LoginItem.canRegister else {
+                    let alert = NSAlert()
+                    alert.messageText = "Автозапуск недоступен для этой сборки"
+                    alert.informativeText = "Автозапуск можно включить только у установленного приложения. Выполните `make install`, затем откройте /Applications/CursorUsageTray.app и включите автозапуск оттуда."
+                    alert.runModal()
+                    return
+                }
                 try SMAppService.mainApp.register()
             }
         } catch {
@@ -250,6 +260,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
         }
         refresh()
+    }
+}
+
+/// Login-item (SMAppService) helpers shared by the menu toggle and CLI flags.
+enum LoginItem {
+    /// A proper `.app` bundle can be registered; a bare executable cannot.
+    /// `CURSOR_FORCE_LOGIN=1` overrides this (used only to repair a stale record).
+    static var canRegister: Bool {
+        Bundle.main.bundlePath.hasSuffix(".app")
+            || ProcessInfo.processInfo.environment["CURSOR_FORCE_LOGIN"] == "1"
+    }
+
+    /// Register the running .app as a login item. Returns false if this isn't a bundle.
+    @discardableResult
+    static func register() -> Bool {
+        guard canRegister else { return false }
+        do {
+            try SMAppService.mainApp.register()
+            return true
+        } catch {
+            FileHandle.standardError.write(Data("register failed: \(error)\n".utf8))
+            return false
+        }
+    }
+
+    /// Unregister the running executable's login item (works for any location).
+    @discardableResult
+    static func unregister() -> Bool {
+        do {
+            try SMAppService.mainApp.unregister()
+            return true
+        } catch {
+            FileHandle.standardError.write(Data("unregister failed: \(error)\n".utf8))
+            return false
+        }
     }
 }
 
