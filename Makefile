@@ -1,6 +1,4 @@
-.PHONY: build run app install launch login unlogin clean selftest probe probe-loop
-
-APP_BIN := /Applications/CursorUsageTray.app/Contents/MacOS/CursorUsageTray
+.PHONY: build run app install launch clean selftest probe probe-loop
 
 build:
 	swift build
@@ -28,19 +26,6 @@ install: app
 
 launch:
 	open -a CursorUsageTray
-
-# Устанавливает .app и регистрирует автозапуск при входе (SMAppService).
-# Регистрация выполняется из УСТАНОВЛЕННОГО бинарника, поэтому login item
-# указывает на /Applications/CursorUsageTray.app, а не на debug-сборку.
-login: install
-	"$(APP_BIN)" --register-login
-	open -a CursorUsageTray
-	@echo "Автозапуск включён (login item -> /Applications/CursorUsageTray.app)."
-
-# Отключает автозапуск при входе.
-unlogin:
-	-"$(APP_BIN)" --unregister-login 2>/dev/null || true
-	@echo "Автозапуск выключен."
 
 clean:
 	swift package clean

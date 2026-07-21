@@ -105,15 +105,7 @@ swift build
 make run
 make app
 make install
-make login      # install + регистрация автозапуска (SMAppService), из установленного .app
-make unlogin    # снять автозапуск
 ```
-
-Автозапуск: `SMAppService.mainApp` регистрирует _бандл_, в котором лежит
-работающий бинарник. Поэтому регистрировать нужно из
-`/Applications/CursorUsageTray.app` (что и делает `make login`), а не из
-`.build/...` — иначе login item укажет на debug-бинарник и запустится
-терминал-стайл. CLI-флаги: `--register-login` / `--unregister-login`.
 
 Перед завершением значимых изменений запускайте минимум:
 
