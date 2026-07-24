@@ -10,7 +10,7 @@ enum UsageError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .noToken:
-            return "Токен Cursor не найден. Укажите CURSOR_API_KEY/CURSOR_TOKEN или сохраните токен в настройках."
+            return "Токен Cursor не найден — обычно это значит, что Cursor не запущен или в нём не выполнен вход. Откройте Cursor и залогиньтесь, либо укажите CURSOR_API_KEY/CURSOR_TOKEN или сохраните токен в настройках."
         case .unauthorized:
             return "Cursor отклонил авторизацию (401/403). Откройте Cursor и убедитесь, что аккаунт залогинен."
         case .http(let code):
